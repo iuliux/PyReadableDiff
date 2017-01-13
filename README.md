@@ -41,7 +41,7 @@ else:
     ...
 ```
 
-### Custom Diffs
+## Custom Diffs
 
 If you need more customization for your diffs, you can inherit from the `pydiff.Diff` base class and override the following available public methods:
 
