@@ -68,19 +68,19 @@ class Diff(object):
                     # Otherwise track this path as a potential candidate and continue
                     best_path[diagonal_path] = base_path
 
-    # Public methods (can be overwritten and customized by subclasses for computing various types of diffs)
+    # Public methods (can be overwritten by subclasses for computing customized diffs)
 
-    def cast_input(self, value):
-        return value
+    def cast_input(self, string):
+        return string
 
-    def tokenize(self, value):
-        return list(value)
+    def tokenize(self, string):
+        return list(string)
 
-    def join(self, value):
-        return ''.join(value)
+    def join(self, tokens):
+        return ''.join(tokens)
 
-    def equals(self, left, right):
-        return left == right
+    def equals(self, left_token, right_token):
+        return left_token == right_token
 
     # Private methods (for internal usage only)
 
