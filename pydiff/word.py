@@ -12,6 +12,10 @@ class WordDiff(Diff):
     def tokenize(self, string):
         return [token for token in self._word_split_re.split(string) if token]
 
+    def equals(self, left_token, right_token):
+        return left_token == right_token or \
+               (left_token.isspace() and right_token.isspace())
+
 
 _word_diff = WordDiff()
 
