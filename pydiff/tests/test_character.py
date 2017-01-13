@@ -18,6 +18,9 @@ class TestCharacter(utils.TestBase):
         self.check_xml(' helloworld ', 'Hello, world',
                        '<del> h</del><ins>H</ins>ello<ins>, </ins>world<del> </del>')
 
+        self.check_xml('restaura', 'aurant',
+                       '<del>rest</del>aura<ins>nt</ins>')
+
         # Some corner cases
 
         self.check_xml('New Value', 'New Value', 'New Value')

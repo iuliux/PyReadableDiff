@@ -16,6 +16,10 @@ though the APIs may differ.
 
     Returns a list of change dicts (see below).
 
+* `pydiff.diff_words_with_spaces(old_string, new_string)` - diffs two blocks of text, comparing word by word, treating whitespaces as significant.
+
+    Returns a list of change dicts (see below).
+
 * `pydiff.convert_changes_to_xml(changes)` - converts a list of changes to a serialized XML format.
 
 ### Change Dicts

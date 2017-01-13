@@ -37,6 +37,10 @@ class TestWord(utils.TestBase):
 
         self.check_xml('New Value', 'New  Value', 'New  Value')
 
+        self.check_xml(' ', '\t', '\t')
+
+        self.check_xml('\t', '\n', '\n')
+
     def test_diff_words_empty(self):
         self.check_xml('New Value', '',
                        '<del>New Value</del>')
@@ -95,3 +99,22 @@ class TestWord(utils.TestBase):
         self.check_xml('', ' ', '<ins> </ins>')
 
         self.check_xml(' ', '', '<del> </del>')
+
+
+class TestWordWithSpace(utils.TestBase):
+
+    def setUp(self):
+        self.differ = pydiff.WordWithSpaceDiff()
+
+    def test_diff_words_with_spaces(self):
+        self.check_xml('New Value', 'New  ValueMoreData',
+                       'New<del> Value</del><ins>  ValueMoreData</ins>')
+
+        self.check_xml('New Value  ', 'New  ValueMoreData ',
+                       'New<ins>  ValueMoreData</ins> <del>Value  </del>')
+
+        self.check_xml(' ', '\t',
+                       '<del> </del><ins>\t</ins>')
+
+        self.check_xml('\t', '\n',
+                       '<del>\t</del><ins>\n</ins>')

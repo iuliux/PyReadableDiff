@@ -13,7 +13,7 @@ class WordDiff(Diff):
         return [token for token in self._word_split_re.split(string) if token]
 
     def _is_space(self, string):
-        # Empty strings should also be selected
+        # Empty strings should also be treated as containing only whitespaces
         return not string or string.isspace()
 
     def are_equal(self, left_token, right_token):
@@ -22,8 +22,20 @@ class WordDiff(Diff):
                (self._is_space(left_token) and self._is_space(right_token))
 
 
+class WordWithSpaceDiff(WordDiff):
+
+    def are_equal(self, left_token, right_token):
+        # Whitespaces are not ignored anymore here, so override parent's method
+        return left_token == right_token
+
+
 _word_diff = WordDiff()
+_word_with_space_diff = WordWithSpaceDiff()
 
 
 def diff_words(old_string, new_string):
     return _word_diff.diff(old_string, new_string)
+
+
+def diff_words_with_spaces(old_string, new_string):
+    return _word_with_space_diff.diff(old_string, new_string)
