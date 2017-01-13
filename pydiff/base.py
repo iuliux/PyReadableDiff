@@ -91,7 +91,7 @@ class Diff(object):
         old_pos = new_pos - diagonal_path
 
         common_count = 0
-        while new_pos + 1 < new_len and old_pos + 1 < old_len and self.equals(new_string[new_pos + 1], old_string[old_pos + 1]):
+        while new_pos + 1 < new_len and old_pos + 1 < old_len and self.are_equal(new_string[new_pos + 1], old_string[old_pos + 1]):
             new_pos += 1
             old_pos += 1
             common_count += 1
@@ -141,7 +141,7 @@ class Diff(object):
         # Special case handle for when one terminal is ignored. For this case we merge the
         # terminal into the prior string and drop the change
         last_component = components[component_len - 1]
-        if component_len > 1 and (last_component.get('added') or last_component.get('removed')) and self.equals('', last_component['value']):
+        if component_len > 1 and (last_component.get('added') or last_component.get('removed')) and self.are_equal('', last_component['value']):
             components[component_len - 2]['value'] += last_component['value']
             components.pop()
 
