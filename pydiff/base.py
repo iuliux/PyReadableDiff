@@ -14,8 +14,8 @@ class Diff(object):
 
     def diff(self, old_string, new_string):
         # Allow subclasses to massage the input prior to running
-        old_string = self.cast_input(old_string)
-        new_string = self.cast_input(new_string)
+        old_string = self.preprocess(old_string)
+        new_string = self.preprocess(new_string)
 
         old_string = self.tokenize(old_string)
         new_string = self.tokenize(new_string)
@@ -70,7 +70,7 @@ class Diff(object):
 
     # Public methods (can be overwritten by subclasses for computing customized diffs)
 
-    def cast_input(self, string):
+    def preprocess(self, string):
         return string
 
     def tokenize(self, string):
@@ -79,7 +79,7 @@ class Diff(object):
     def join(self, tokens):
         return ''.join(tokens)
 
-    def equals(self, left_token, right_token):
+    def are_equal(self, left_token, right_token):
         return left_token == right_token
 
     # Private methods (for internal usage only)
