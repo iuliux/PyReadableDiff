@@ -17,3 +17,13 @@ class TestCharacter(utils.TestBase):
 
         self.check_xml(' helloworld ', 'Hello, world',
                        '<del> h</del><ins>H</ins>ello<ins>, </ins>world<del> </del>')
+
+        # Some corner cases
+
+        self.check_xml('New Value', 'New Value', 'New Value')
+
+        self.check_xml('', '', '')
+
+        self.check_xml('New Value', '', '<del>New Value</del>')
+
+        self.check_xml('', 'New Value', '<ins>New Value</ins>')
