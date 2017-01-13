@@ -23,7 +23,7 @@ though the APIs may differ.
 Many of the methods above return change dicts. These dicts consist of the following keys:
 
 * `value`: text content
-* `count`: number of tokens merged together in the given value
+* `count`: number of tokens merged together in order to form the given value
 * `added`: `True` if the value was inserted into the new string (`None` or absent otherwise)
 * `removed`: `True` of the value was removed from the old string (`None` or absent otherwise)
 
@@ -46,7 +46,7 @@ else:
 If you need more customization for your diffs, you can inherit from the `pydiff.Diff` base class and override the following available public methods:
 
 * `preprocess(self, string)` - prepares an input string for processing (is used on `old_string` and `new_string` prior to running the main diff computing algorithm).
-By default does nothing.
+By default does nothing and simply returns the same string back.
 
 * `tokenize(self, string)` - splits the preprocessed input string into atomic parts, which are compared with each other during the diffing.
 By default uses characters as tokens.
@@ -69,4 +69,4 @@ class CustomDiff(pydiff.Diff):
     ...
 ```
 
-After that actual diffs can be computed via the `.diff(old_string, new_string)` method of instances of your newly created subclass.
+After that actual diffs can be computed via the inherited `.diff(old_string, new_string)` method of instances of your newly created subclass.
