@@ -8,7 +8,7 @@ import utils
 class TestWord(utils.TestBase):
 
     def setUp(self):
-        self.differ = pydiff.WordDiff()
+        super(TestWord, self).setUp(pydiff.WordDiff)
 
     def test_diff_words_whitespaces(self):
         self.check_xml('New Value', 'New  ValueMoreData',
@@ -104,7 +104,7 @@ class TestWord(utils.TestBase):
 class TestWordWithSpace(utils.TestBase):
 
     def setUp(self):
-        self.differ = pydiff.WordWithSpaceDiff()
+        super(TestWordWithSpace, self).setUp(pydiff.WordWithSpaceDiff)
 
     def test_diff_words_with_spaces(self):
         self.check_xml('New Value', 'New  ValueMoreData',

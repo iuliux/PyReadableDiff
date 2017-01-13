@@ -6,7 +6,7 @@ import utils
 class TestCharacter(utils.TestBase):
 
     def setUp(self):
-        self.differ = pydiff.CharacterDiff()
+        super(TestCharacter, self).setUp(pydiff.CharacterDiff)
 
     def test_diff_characters(self):
         self.check_xml('New Value.', 'New ValueMoreData.',
