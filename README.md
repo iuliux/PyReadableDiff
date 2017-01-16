@@ -1,4 +1,7 @@
 # PyReadableDiff
+
+![Status](https://travis-ci.org/BeagleInc/PyReadableDiff.svg?branch=master)
+
 Intuitive human-readable diff for text.
 
 The [pydiff](https://github.com/BeagleInc/PyReadableDiff)
