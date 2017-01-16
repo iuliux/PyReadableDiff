@@ -3,64 +3,8 @@ from collections import defaultdict
 
 class Diff(object):
 
-    def diff(self, old_string, new_string):
-        # Allow subclasses to massage the input prior to running
-        old_string = self.preprocess(old_string)
-        new_string = self.preprocess(new_string)
-
-        old_string = self.tokenize(old_string)
-        new_string = self.tokenize(new_string)
-
-        new_len = len(new_string)
-        old_len = len(old_string)
-        max_edit_length = new_len + old_len
-        best_path = defaultdict(lambda: None)
-        best_path[0] = {'new_pos': -1, 'components': []}
-
-        # Seed edit_length = 0, i.e. the content starts with the same values
-        old_pos = self._extract_common(best_path[0], new_string, old_string, 0)
-        if best_path[0]['new_pos'] + 1 >= new_len and old_pos + 1 >= old_len:
-            # Identity per the equality and tokenizer
-            return [{'value': self.join(new_string), 'count': new_len}]
-
-        for edit_length in range(1, max_edit_length + 1):
-            # Check all permutations of a given edit length for acceptance
-            for diagonal_path in range(-1 * edit_length, edit_length + 1, 2):
-                add_path = best_path[diagonal_path - 1]
-                remove_path = best_path[diagonal_path + 1]
-                old_pos = (remove_path['new_pos'] if remove_path else 0) - diagonal_path
-                if add_path:
-                    # No one else is going to attempt to use this value, clear it
-                    best_path[diagonal_path - 1] = None
-
-                can_add = add_path and add_path['new_pos'] + 1 < new_len
-                can_remove = remove_path and 0 <= old_pos < old_len
-                if not (can_add or can_remove):
-                    # If this path is a terminal then prune
-                    best_path[diagonal_path] = None
-                    continue
-
-                # Select the diagonal that we want to branch from. We select the prior
-                # path whose position in the new string is the farthest from the origin
-                # and does not pass the bounds of the diff graph
-                if not can_add or (can_remove and add_path['new_pos'] < remove_path['new_pos']):
-                    base_path = self._clone_path(remove_path)
-                    self._push_component(base_path['components'], None, True)
-                else:
-                    base_path = add_path  # No need to clone, we've pulled it from the list
-                    base_path['new_pos'] += 1
-                    self._push_component(base_path['components'], True, None)
-
-                old_pos = self._extract_common(base_path, new_string, old_string, diagonal_path)
-
-                # If we have hit the end of both strings, then we are done
-                if base_path['new_pos'] + 1 >= new_len and old_pos + 1 >= old_len:
-                    return self._build_values(base_path['components'], new_string, old_string)
-                else:
-                    # Otherwise track this path as a potential candidate and continue
-                    best_path[diagonal_path] = base_path
-
-    # Public methods (can be overwritten by subclasses for computing customized diffs)
+    # Public methods (can be overridden by subclasses
+    # for computing customized diffs)
 
     def preprocess(self, string):
         return string
@@ -74,67 +18,144 @@ class Diff(object):
     def are_equal(self, left_token, right_token):
         return left_token == right_token
 
-    # Private methods (for internal usage only)
+    # Actual implementation of diff computing algorithm (though this method
+    # is also public, it shouldn't be changed unless you want to implement
+    # and use another algorithm instead of the current one)
 
-    def _extract_common(self, base_path, new_string, old_string, diagonal_path):
-        new_len = len(new_string)
+    def diff(self, old_string, new_string):
+        # Preprocess the input strings prior to running
+        old_string = self.preprocess(old_string)
+        new_string = self.preprocess(new_string)
+
+        # Split the already processed strings into tokens
+        old_tokens = self.tokenize(old_string)
+        new_tokens = self.tokenize(new_string)
+
+        old_len = len(old_tokens)
+        new_len = len(new_tokens)
+
+        furthest_paths = defaultdict(lambda: None)
+        furthest_paths[0] = {'new_pos': -1, 'components': []}
+
+        # Seed the case when edit_dist = 0, i.e. the strings are considered
+        # to be equal, but we take the most recent version
+        old_pos, new_pos = self._extend_path(furthest_paths[0],
+                                             old_tokens, new_tokens, 0)
+        if old_pos + 1 >= old_len and new_pos + 1 >= new_len:
+            return [{'value': self.join(new_tokens), 'count': new_len}]
+
+        max_edit_dist = new_len + old_len
+        for edit_dist in range(1, max_edit_dist + 1):
+            for diag in range(-edit_dist, edit_dist + 1, 2):
+                add_path = furthest_paths[diag - 1]
+                remove_path = furthest_paths[diag + 1]
+
+                # Select the diagonal that we want to branch from.
+                # We select the previous path whose endpoint in the new string
+                # is the farthest from the origin and does not pass the bounds
+                # of the diff (a.k.a edit) graph
+                if diag == -edit_dist or diag != edit_dist and \
+                        add_path['new_pos'] < remove_path['new_pos']:
+                    path = self._copy_path(remove_path)
+                    self._push_component(path['components'], removed=True)
+                else:
+                    path = self._copy_path(add_path)
+                    path['new_pos'] += 1
+                    self._push_component(path['components'], added=True)
+
+                # Try to extend the current path by matching as many tokens
+                # as possible
+                old_pos, new_pos = \
+                    self._extend_path(path, old_tokens, new_tokens, diag)
+
+                # If we have hit the ends of both strings, then we are done,
+                # since a shortest path (i.e. with the minimum number of
+                # editions) has just been found
+                if old_pos + 1 >= old_len and new_pos + 1 >= new_len:
+                    return self._build_values_from_components(
+                        path['components'], old_tokens, new_tokens
+                    )
+                else:
+                    # Otherwise track this path as a potential candidate
+                    # and proceed to the next iteration
+                    furthest_paths[diag] = path
+
+    # Private utility methods (for internal usage only)
+
+    def _extend_path(self, path, old_string, new_string, diagonal):
         old_len = len(old_string)
-        new_pos = base_path['new_pos']
-        old_pos = new_pos - diagonal_path
+        new_len = len(new_string)
 
-        common_count = 0
-        while new_pos + 1 < new_len and old_pos + 1 < old_len and self.are_equal(new_string[new_pos + 1], old_string[old_pos + 1]):
+        new_pos = path['new_pos']
+        old_pos = new_pos - diagonal
+
+        count = 0
+        while new_pos + 1 < new_len and old_pos + 1 < old_len and \
+                self.are_equal(new_string[new_pos + 1],
+                               old_string[old_pos + 1]):
             new_pos += 1
             old_pos += 1
-            common_count += 1
+            count += 1
 
-        if common_count:
-            base_path['components'].append({'count': common_count})
+        if count:
+            path['components'].append({'count': count})
 
-        base_path['new_pos'] = new_pos
-        return old_pos
+        path['new_pos'] = new_pos
+        return old_pos, new_pos
 
-    def _push_component(self, components, added, removed):
-        last = components[-1] if components else None
-        if last and last.get('added') == added and last.get('removed') == removed:
-            new_last = last.copy()
-            new_last['count'] += 1
-            components[-1] = new_last
+    def _push_component(self, components, added=None, removed=None):
+        last_component = components[-1] if components else None
+        if last_component and last_component.get('added') == added and \
+                last_component.get('removed') == removed:
+            last_component = last_component.copy()
+            last_component['count'] += 1
+            components[-1] = last_component
         else:
             components.append({'count': 1, 'added': added, 'removed': removed})
 
-    def _clone_path(self, path):
-        return {'new_pos': path['new_pos'], 'components': list(path['components'])}
+    def _copy_path(self, path):
+        return {'new_pos': path['new_pos'],
+                'components': list(path['components'])}
 
-    def _build_values(self, components, new_string, old_string):
-        component_len = len(components)
-        new_pos = 0
+    def _build_values_from_components(self, components,
+                                      old_tokens, new_tokens):
         old_pos = 0
+        new_pos = 0
 
-        for component_pos in range(component_len):
-            component = components[component_pos]
+        for comp_pos in range(len(components)):
+            component = components[comp_pos]
+
             if not component.get('removed'):
-                component['value'] = self.join(new_string[new_pos : new_pos + component['count']])
+                component['value'] = self.join(
+                    new_tokens[new_pos:(new_pos + component['count'])]
+                )
                 new_pos += component['count']
-
-                # Common case
+                # The component is neither removed, nor added,
+                # i.e. it is unchanged, so we have to increment both indices
                 if not component.get('added'):
                     old_pos += component['count']
             else:
-                component['value'] = self.join(old_string[old_pos : old_pos + component['count']])
+                component['value'] = self.join(
+                    old_tokens[old_pos:(old_pos + component['count'])]
+                )
                 old_pos += component['count']
 
-                # Reverse add and remove so removes are output first to match common convention.
-                # The diffing algorithm is tied to add then remove output and this is the simplest
-                # route to get the desired output with minimal overhead
-                if component_pos and components[component_pos - 1].get('added'):
-                    components[component_pos], components[component_pos - 1] = components[component_pos - 1], components[component_pos]
+                # Reverse the order of additions and removals in order to match
+                # the common convention. The diffing algorithm is tied to
+                # perform additions first and then removals, and this is the
+                # simplest way to get the desired output with minimal overhead
+                if comp_pos and components[comp_pos - 1].get('added'):
+                    components[comp_pos], components[comp_pos - 1] = \
+                        components[comp_pos - 1], components[comp_pos]
 
-        # Special case handle for when one terminal is ignored. For this case we merge the
-        # terminal into the prior string and drop the change
-        last_component = components[component_len - 1]
-        if component_len > 1 and (last_component.get('added') or last_component.get('removed')) and self.are_equal('', last_component['value']):
-            components[component_len - 2]['value'] += last_component['value']
+        # Handle the special case when the last change is dropped and
+        # the last component is appended to the previous one
+        last_component = components[-1]
+        added_or_removed = \
+            last_component.get('added') or last_component.get('removed')
+        if len(components) > 1 and added_or_removed and \
+                self.are_equal('', last_component['value']):
+            components[-2]['value'] += last_component['value']
             components.pop()
 
         return components
