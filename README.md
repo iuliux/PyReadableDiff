@@ -9,9 +9,20 @@ library was inspired by the [jsdiff](https://github.com/kpdecker/jsdiff)
 library, and it tries to port as much functionality from JS to Python as possible,
 though the APIs may differ.
 
-## Install
+## Installation
 
-TODO
+The package is available through the [PyPi](https://pypi.python.org/pypi/PyReadableDiff),
+so you can easily download and install it via `pip`:
+```bash
+pip install PyReadableDiff
+```
+
+After the installation successfully completes, you may open any available Python interpreter and check whether the package can be imported and used:
+```python
+>>> import pydiff
+>>> pydiff.__version__
+...
+```
 
 ## API
 
