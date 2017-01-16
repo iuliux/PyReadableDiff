@@ -30,3 +30,5 @@ class TestCharacter(utils.TestBase):
         self.check_xml('New Value', '', '<del>New Value</del>')
 
         self.check_xml('', 'New Value', '<ins>New Value</ins>')
+
+        self.check_xml('abc', 'xyz', '<del>abc</del><ins>xyz</ins>')

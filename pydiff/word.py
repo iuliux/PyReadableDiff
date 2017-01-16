@@ -25,7 +25,8 @@ class WordDiff(Diff):
 class WordWithSpaceDiff(WordDiff):
 
     def are_equal(self, left_token, right_token):
-        # Whitespaces are not ignored anymore here, so override parent's method
+        # Whitespaces are not ignored anymore here,
+        # so override the parent's method
         return left_token == right_token
 
 

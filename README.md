@@ -23,6 +23,14 @@ though the APIs may differ.
 
     Returns a list of change dicts (see below).
 
+* `pydiff.diff_lines(old_string, new_string)` - diffs two blocks of text, comparing line by line.
+
+    Returns a list of change dicts (see below).
+
+* `pydiff.diff_stripped_lines(old_string, new_string)` - diffs two blocks of text, comparing line by line, discarding leading and trailing whitespaces.
+
+    Returns a list of change dicts (see below).
+
 * `pydiff.convert_changes_to_xml(changes)` - converts a list of changes to a serialized XML format.
 
 ### Change Dicts
@@ -76,4 +84,4 @@ class CustomDiff(pydiff.Diff):
     ...
 ```
 
-After that actual diffs can be computed via the inherited `.diff(old_string, new_string)` method of instances of your newly created subclass.
+After that actual diffs can be computed via the inherited `.diff(self, old_string, new_string)` method of instances of your newly created subclass.
