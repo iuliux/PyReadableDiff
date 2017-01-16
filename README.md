@@ -11,7 +11,7 @@ though the APIs may differ.
 
 ## Installation
 
-The package is available through the [PyPi](https://pypi.python.org/pypi/PyReadableDiff),
+The package is available through the [PyPI](https://pypi.python.org/pypi/PyReadableDiff),
 so you can easily download and install it via `pip`:
 ```bash
 pip install PyReadableDiff
