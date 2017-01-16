@@ -1,13 +1,4 @@
-class _AssociativeArray(object):
-
-    def __init__(self, data={}):
-        self._data = data.copy()
-
-    def __getitem__(self, key):
-        return self._data.get(key)
-
-    def __setitem__(self, key, value):
-        self._data[key] = value
+from collections import defaultdict
 
 
 class Diff(object):
@@ -23,7 +14,8 @@ class Diff(object):
         new_len = len(new_string)
         old_len = len(old_string)
         max_edit_length = new_len + old_len
-        best_path = _AssociativeArray({0: {'new_pos': -1, 'components': []}})
+        best_path = defaultdict(lambda: None)
+        best_path[0] = {'new_pos': -1, 'components': []}
 
         # Seed edit_length = 0, i.e. the content starts with the same values
         old_pos = self._extract_common(best_path[0], new_string, old_string, 0)
