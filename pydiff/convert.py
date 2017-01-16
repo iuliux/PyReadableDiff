@@ -2,7 +2,8 @@ from xml.sax.saxutils import escape as xml_escape
 
 
 def _extended_xml_escape(string):
-    # xml_escape only escapes <, &, and >, so provide an additional mapping for ' and "
+    # xml_escape only escapes <, &, and >,
+    # so provide an additional mapping for ' and "
     return xml_escape(string, {'"': '&quot;', "'": "&apos;"})
 
 
