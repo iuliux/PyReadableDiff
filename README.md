@@ -14,7 +14,7 @@ though the APIs may differ.
 
 The package is available through the [PyPI](https://pypi.python.org/pypi/PyReadableDiff),
 so you can easily download and install it via `pip`:
-```bash
+```shell
 pip install PyReadableDiff
 ```
 
@@ -24,6 +24,12 @@ After the installation successfully completes, you may open any available Python
 >>> pydiff.__version__
 ...
 ```
+
+Also you can install the library from a clone of the repository by running
+```shell
+python setup.py install
+```
+from the root of the local copy.
 
 ## API
 
@@ -101,3 +107,20 @@ class CustomDiff(pydiff.Diff):
 ```
 
 After that actual diffs can be computed via the inherited `.diff(self, old_string, new_string)` method of instances of your newly created subclass.
+
+## Contributing and Testing
+
+If you want to contribute to the library, you are free to create pull requests. Make sure that all your changes are in a separate branch.
+If you add some new functionality, don't forget to add corresponding tests. Also check that all the tests pass (both existing and newly added).
+
+In order to run the tests locally, you have to install all the neccessary packages for testing:
+```shell
+pip install -r test-requirements.txt
+```
+
+After that you will be able to run the tests (they are located in `pydiff/tests` and have the prefix `test_`):
+```shell
+pytest pydiff
+```
+
+Simply add `--pep8` to the command above in order to run some `PEP 8` checks instead of the usual unit tests.
