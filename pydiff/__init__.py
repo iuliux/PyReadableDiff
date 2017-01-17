@@ -12,4 +12,4 @@ from .line import LineDiff, StrippedLineDiff,\
 from .convert import convert_changes_to_xml
 
 
-__version__ = '0.1.0'
+__version__ = '0.1.1'
