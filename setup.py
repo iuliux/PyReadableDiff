@@ -11,5 +11,6 @@ setuptools.setup(
     url='https://github.com/BeagleInc/PyReadableDiff',
     version=pydiff.__version__,
     packages=setuptools.find_packages(),
+    keywords=['python', 'text', 'diff'],
     license='Apache-2.0'
 )
