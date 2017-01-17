@@ -7,6 +7,13 @@ NAME = 'PyReadableDiff'
 
 DESCRIPTION = 'Intuitive human-readable diff for text'
 
+# Use .rst markup for the long description in order to provide
+# the link to the repository, since PyPI doesn't support .md markup,
+# so we can't use the content of README.md for this purpose.
+LONG_DESCRIPTION = 'For more detailed information about the library please ' \
+                   'visit `the official repository ' \
+                   '<https://github.com/BeagleInc/PyReadableDiff>`_.'
+
 AUTHOR = 'Gevorg Davoian, Iulius Curt, Kevin Decker ' \
          '(the author of the original jsdiff library) and others'
 
@@ -42,6 +49,7 @@ LICENSE = 'Apache-2.0'
 setuptools.setup(
     name=NAME,
     description=DESCRIPTION,
+    long_description=LONG_DESCRIPTION,
     author=AUTHOR,
     author_email=AUTHOR_EMAIL,
     url=URL,
