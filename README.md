@@ -1,7 +1,7 @@
 # PyReadableDiff
 
-![Status](https://travis-ci.org/BeagleInc/PyReadableDiff.svg?branch=master)
-[![Latest Version](https://img.shields.io/pypi/v/PyReadableDiff.svg)](https://pypi.python.org/pypi/PyReadableDiff)
+[![Status](https://travis-ci.org/BeagleInc/PyReadableDiff.svg?branch=master)](https://travis-ci.org/BeagleInc/PyReadableDiff)
+[![Version](https://img.shields.io/pypi/v/PyReadableDiff.svg)](https://pypi.python.org/pypi/PyReadableDiff)
 
 Intuitive human-readable diff for text.
 
