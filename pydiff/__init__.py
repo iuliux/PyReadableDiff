@@ -9,6 +9,9 @@ from .word import WordDiff, WordWithSpaceDiff, \
 from .line import LineDiff, StrippedLineDiff,\
                   diff_lines, diff_stripped_lines
 
+from .list import ListDiff, \
+                  diff_lists
+
 from .convert import convert_changes_to_xml
 
 

@@ -53,6 +53,10 @@ from the root of the local copy.
 
     Returns a list of change dicts (see below).
 
+* `pydiff.diff_lists(old_list, new_list)` - diffs two lists (or any other iterable objects which will be converted to lists), comparing element by element.
+
+    Returns a list of change dicts (see below).
+
 * `pydiff.convert_changes_to_xml(changes)` - converts a list of changes to a serialized XML format.
 
 ### Change Dicts
