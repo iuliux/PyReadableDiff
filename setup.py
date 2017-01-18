@@ -25,7 +25,7 @@ VERSION = pydiff.__version__
 
 PACKAGES = setuptools.find_packages()
 
-KEYWORDS = ['python', 'text', 'diff']
+KEYWORDS = ['python', 'text', 'diff', 'pydiff']
 
 CLASSIFIERS = [
     "Intended Audience :: Developers",
