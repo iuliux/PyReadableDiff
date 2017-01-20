@@ -8,7 +8,11 @@ Intuitive human-readable diff for text.
 The [pydiff](https://github.com/BeagleInc/PyReadableDiff)
 library was inspired by the [jsdiff](https://github.com/kpdecker/jsdiff)
 library, and it tries to port as much functionality from JS to Python as possible,
-though the APIs may differ.
+though the APIs may differ. Though the current implementation is also based on the algorithm proposed in
+["An O(ND) Difference Algorithm and its Variations" (Myers, 1986)](http://citeseerx.ist.psu.edu/viewdoc/summary?doi=10.1.1.4.6927),
+one may not assume obtaining identical diffs for all pairs of input strings,
+since in some cases there may be several optimal solutions (in terms of [edit distance](https://en.wikipedia.org/wiki/Edit_distance)),
+and the algorithms will return only one of them.
 
 ## Installation
 
