@@ -15,4 +15,4 @@ from .list import ListDiff, \
 from .convert import convert_changes_to_xml
 
 
-__version__ = '0.2.2'
+__version__ = '0.2.3'
