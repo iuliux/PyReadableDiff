@@ -51,11 +51,17 @@ class Diff(object):
                 remove_path = furthest_paths[diag + 1]
 
                 # Select the diagonal that we want to branch from.
-                # We select the previous path whose endpoint in the new string
+                # We select the previous path whose endpoint in the old string
                 # is the farthest from the origin and does not pass the bounds
-                # of the diff (a.k.a edit) graph
+                # of the diff (a.k.a edit) graph. Notice, that we tend to
+                # perform removals first (as many as possible) and then
+                # insertions in order to follow the common convention and also
+                # to get slightly better diffs with bigger groups of
+                # removed/added tokens rather than several smaller alternating
+                # ones.
                 if diag == -edit_dist or diag != edit_dist and \
-                        add_path['new_pos'] < remove_path['new_pos']:
+                        self._get_endpoint(add_path, diag - 1)[0] <= \
+                        self._get_endpoint(remove_path, diag + 1)[0]:
                     path = self._copy_path(remove_path)
                     self._push_component(path['components'], removed=True)
                 else:
@@ -82,19 +88,23 @@ class Diff(object):
 
     # Private utility methods (for internal usage only)
 
-    def _extend_path(self, path, old_string, new_string, diagonal):
+    def _get_endpoint(self, path, diag):
+        new_pos = path['new_pos']
+        old_pos = new_pos - diag
+        return old_pos, new_pos
+
+    def _extend_path(self, path, old_string, new_string, diag):
         old_len = len(old_string)
         new_len = len(new_string)
 
-        new_pos = path['new_pos']
-        old_pos = new_pos - diagonal
+        old_pos, new_pos = self._get_endpoint(path, diag)
 
         count = 0
-        while new_pos + 1 < new_len and old_pos + 1 < old_len and \
-                self.are_equal(new_string[new_pos + 1],
-                               old_string[old_pos + 1]):
-            new_pos += 1
+        while old_pos + 1 < old_len and new_pos + 1 < new_len and \
+                self.are_equal(old_string[old_pos + 1],
+                               new_string[new_pos + 1]):
             old_pos += 1
+            new_pos += 1
             count += 1
 
         if count:
@@ -122,9 +132,7 @@ class Diff(object):
         old_pos = 0
         new_pos = 0
 
-        for comp_pos in range(len(components)):
-            component = components[comp_pos]
-
+        for component in components:
             if not component.get('removed'):
                 component['value'] = self.join(
                     new_tokens[new_pos:(new_pos + component['count'])]
@@ -139,14 +147,6 @@ class Diff(object):
                     old_tokens[old_pos:(old_pos + component['count'])]
                 )
                 old_pos += component['count']
-
-                # Reverse the order of additions and removals in order to match
-                # the common convention. The diffing algorithm is tied to
-                # perform additions first and then removals, and this is the
-                # simplest way to get the desired output with minimal overhead
-                if comp_pos and components[comp_pos - 1].get('added'):
-                    components[comp_pos], components[comp_pos - 1] = \
-                        components[comp_pos - 1], components[comp_pos]
 
         # Handle the special case when the last change is dropped and
         # the last component is appended to the previous one

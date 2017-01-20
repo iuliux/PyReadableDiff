@@ -111,7 +111,7 @@ class TestWordWithSpace(utils.TestBase):
                        'New<del> Value</del><ins>  ValueMoreData</ins>')
 
         self.check_xml('New Value  ', 'New  ValueMoreData ',
-                       'New<ins>  ValueMoreData</ins> <del>Value  </del>')
+                       'New<del> Value</del>  <ins>ValueMoreData </ins>')
 
         self.check_xml(' ', '\t',
                        '<del> </del><ins>\t</ins>')
