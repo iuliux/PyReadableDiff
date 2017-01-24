@@ -116,6 +116,10 @@ class CustomDiff(pydiff.Diff):
 
 After that actual diffs can be computed via the inherited `.diff(self, old_string, new_string)` method of instances of your newly created subclass.
 
+## Compatibility
+
+The **pydiff** is tested and known to be compatible with the following versions of Python: `2.6`, `2.7`, `3.3`, `3.4`, `3.5`, `3.6`.
+
 ## Contributing and Testing
 
 If you want to contribute to the library, you are free to create pull requests. Make sure that all your changes are in a separate branch.
