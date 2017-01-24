@@ -1,4 +1,4 @@
-# PyReadableDiff
+# PyReadableDiff (a.k.a pydiff)
 
 [![Status](https://travis-ci.org/BeagleInc/PyReadableDiff.svg?branch=master)](https://travis-ci.org/BeagleInc/PyReadableDiff)
 [![Version](https://img.shields.io/pypi/v/PyReadableDiff.svg)](https://pypi.python.org/pypi/PyReadableDiff)
@@ -22,7 +22,7 @@ so you can easily download and install it via `pip`:
 pip install PyReadableDiff
 ```
 
-After the installation successfully completes, you may open any available Python interpreter and check whether the package can be imported and used:
+After the installation successfully completes, you may open any available Python interpreter and check whether the **pydiff** package can be imported and used:
 ```python
 >>> import pydiff
 >>> pydiff.__version__
