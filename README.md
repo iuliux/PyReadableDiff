@@ -1,4 +1,4 @@
-# PyReadableDiff (a.k.a pydiff)
+# PyReadableDiff (pydiff)
 
 [![Status](https://travis-ci.org/BeagleInc/PyReadableDiff.svg?branch=master)](https://travis-ci.org/BeagleInc/PyReadableDiff)
 [![Version](https://img.shields.io/pypi/v/PyReadableDiff.svg)](https://pypi.python.org/pypi/PyReadableDiff)
