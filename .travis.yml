@@ -10,8 +10,8 @@ python:
   - "3.8"
 
 install:
-  - python setup.py install
-  - pip install -r test-requirements.txt
+  - pip install -U .
+  - pip install -U -r test-requirements.txt
 
 script:
   - pytest pydiff
