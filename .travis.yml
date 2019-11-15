@@ -1,12 +1,13 @@
+dist: xenial
+
 language: python
 
 python:
-  - "2.6"
   - "2.7"
-  - "3.3"
-  - "3.4"
   - "3.5"
   - "3.6"
+  - "3.7"
+  - "3.8"
 
 install:
   - python setup.py install
@@ -15,10 +16,3 @@ install:
 script:
   - pytest pydiff
   - pytest pydiff --pep8
-
-notifications:
-  slack:
-    rooms:
-      - beagleinc:DB8ZeLgjLqjW9Mhn3WmXpbuW#circleci
-      - serf-beagle:StH5vRHmpWcpZ6ryDdPzIkc2#ci
-  email: false

@@ -118,7 +118,7 @@ After that actual diffs can be computed via the inherited `.diff(self, old_strin
 
 ## Compatibility
 
-The **pydiff** is tested and known to be compatible with the following versions of Python: `2.6`, `2.7`, `3.3`, `3.4`, `3.5`, `3.6`.
+The **pydiff** is tested and known to be compatible with the following versions of Python: `2.7`, `3.5`, `3.6`, `3.7`, `3.8`.
 
 ## Contributing and Testing
 
