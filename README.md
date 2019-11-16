@@ -1,11 +1,11 @@
 # PyReadableDiff (pydiff)
 
-[![Status](https://travis-ci.org/BeagleInc/PyReadableDiff.svg?branch=master)](https://travis-ci.org/BeagleInc/PyReadableDiff)
+[![Status](https://travis-ci.org/iuliux/PyReadableDiff.svg?branch=master)](https://travis-ci.org/iuliux/PyReadableDiff)
 [![Version](https://img.shields.io/pypi/v/PyReadableDiff.svg)](https://pypi.python.org/pypi/PyReadableDiff)
 
 Intuitive human-readable diff for text.
 
-The [pydiff](https://github.com/BeagleInc/PyReadableDiff)
+The [pydiff](https://github.com/iuliux/PyReadableDiff)
 library was inspired by the [jsdiff](https://github.com/kpdecker/jsdiff)
 library, and it tries to port as much functionality from JS to Python as possible,
 though the APIs may differ. Though the current implementation is also based on the algorithm proposed in
@@ -118,7 +118,7 @@ After that actual diffs can be computed via the inherited `.diff(self, old_strin
 
 ## Compatibility
 
-The **pydiff** is tested and known to be compatible with the following versions of Python: `2.6`, `2.7`, `3.3`, `3.4`, `3.5`, `3.6`.
+The **pydiff** is tested and known to be compatible with the following versions of Python: `2.7`, `3.5`, `3.6`, `3.7`, `3.8`.
 
 ## Contributing and Testing
 

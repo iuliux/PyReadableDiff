@@ -12,14 +12,12 @@ DESCRIPTION = 'Intuitive human-readable diff for text'
 # so we can't use the content of README.md for this purpose.
 LONG_DESCRIPTION = 'For more detailed information about the library please ' \
                    'visit `the official repository ' \
-                   '<https://github.com/BeagleInc/PyReadableDiff>`_.'
+                   '<https://github.com/iuliux/PyReadableDiff>`_.'
 
 AUTHOR = 'Gevorg Davoian, Iulius Curt, Kevin Decker ' \
          '(the author of the original jsdiff library) and others'
 
-AUTHOR_EMAIL = 'davoian.serf@gmail.com'
-
-URL = 'https://github.com/BeagleInc/PyReadableDiff'
+URL = 'https://github.com/iuliux/PyReadableDiff'
 
 VERSION = pydiff.__version__
 
@@ -33,13 +31,12 @@ CLASSIFIERS = [
     "Operating System :: OS Independent",
     "Programming Language :: Python",
     "Programming Language :: Python :: 2",
-    "Programming Language :: Python :: 2.6",
     "Programming Language :: Python :: 2.7",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.3",
-    "Programming Language :: Python :: 3.4",
     "Programming Language :: Python :: 3.5",
     "Programming Language :: Python :: 3.6",
+    "Programming Language :: Python :: 3.7",
+    "Programming Language :: Python :: 3.8",
     "Topic :: Software Development :: Libraries :: Python Modules"
 ]
 
@@ -51,7 +48,6 @@ setuptools.setup(
     description=DESCRIPTION,
     long_description=LONG_DESCRIPTION,
     author=AUTHOR,
-    author_email=AUTHOR_EMAIL,
     url=URL,
     version=VERSION,
     packages=PACKAGES,
